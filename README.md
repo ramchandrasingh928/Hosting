@@ -1,187 +1,57 @@
-const statsGrid = document.querySelector('.stats-grid');
-const studentTableBody = document.getElementById('studentTableBody');
-const attendanceList = document.getElementById('attendanceList');
-const feeList = document.getElementById('feeList');
-const examList = document.getElementById('examList');
-const teacherList = document.getElementById('teacherList');
-const noticeList = document.getElementById('noticeList');
-const studentModal = document.getElementById('studentModal');
-const studentForm = document.getElementById('studentForm');
-const addStudentBtn = document.getElementById('addStudentBtn');
-const closeModalBtn = document.getElementById('closeModalBtn');
-const cancelModalBtn = document.getElementById('cancelModalBtn');
+# School ERP — starter scaffold
 
-async function fetchDashboard() {
-  const res = await fetch('/api/dashboard');
-  const data = await res.json();
-  renderStats(data.stats);
-  renderStudents(data.students);
-  renderAttendance(data.attendance);
-  renderFees(data.fees);
-  renderExams(data.exams);
-  renderTeachers(data.teachers);
-  renderNotices(data.notices);
-}
+A responsive School ERP dashboard starter with an Express API and vanilla HTML/CSS/JavaScript. It demonstrates the UI and basic student creation flow; it is **not yet a production-ready ERP**. Data currently lives in server memory and resets when the process restarts. Add a database, authentication, authorization, audit logging, backups, and tests before using real student information.
 
-function renderStats(stats) {
-  statsGrid.innerHTML = stats
-    .map(
-      (stat) => `
-        <article class="stat-card">
-          <div class="stat-label">${stat.label}</div>
-          <div class="stat-value">${stat.value}</div>
-          <div class="stat-trend">${stat.trend} this month</div>
-        </article>
-      `
-    )
-    .join('');
-}
+## Requirements
+- Node.js 18+
+- npm
 
-function renderStudents(students) {
-  studentTableBody.innerHTML = students
-    .map(
-      (student) => `
-        <tr>
-          <td>${student.name}</td>
-          <td>${student.className}</td>
-          <td>${student.rollNo}</td>
-          <td>${student.guardian}</td>
-          <td>
-            <span class="status-pill ${student.status === 'Active' ? 'status-active' : 'status-pending'}">${student.status}</span>
-          </td>
-        </tr>
-      `
-    )
-    .join('');
-}
+## Run locally
+```bash
+npm install
+npm run dev
+```
+Open <http://localhost:3000>. For a normal run use `npm start`; check JavaScript syntax with `npm run check`.
 
-function renderAttendance(attendance) {
-  attendanceList.innerHTML = attendance
-    .map(
-      (entry) => `
-        <div class="metric-row">
-          <div>
-            <strong>${entry.className}</strong>
-            <div class="progress-line"><span style="width:${entry.percent}%"></span></div>
-          </div>
-          <div style="text-align:right;">
-            <strong>${entry.percent}%</strong>
-            <div>${entry.present} present / ${entry.absent} absent</div>
-          </div>
-        </div>
-      `
-    )
-    .join('');
-}
+## Included starter modules
+- Dashboard metrics
+- Student directory and add-student form
+- Teacher directory
+- Attendance overview
+- Fee overview
+- Exam results
+- Notices and events
+- JSON API endpoints for the dashboard and read-only module data
 
-function renderFees(fees) {
-  feeList.innerHTML = fees
-    .map(
-      (item) => `
-        <div class="metric-row">
-          <div>
-            <strong>${item.student}</strong>
-            <div>${item.className}</div>
-          </div>
-          <div style="text-align:right;">
-            <strong>₹${item.paid.toLocaleString('en-IN')}</strong>
-            <div>Due: ₹${item.due.toLocaleString('en-IN')}</div>
-            <span class="status-pill ${item.status === 'Paid' ? 'status-paid' : 'status-pending'}">${item.status}</span>
-          </div>
-        </div>
-      `
-    )
-    .join('');
-}
+## API
+- `GET /api/health`
+- `GET /api/dashboard`
+- `GET /api/students`
+- `POST /api/students`
+- `GET /api/teachers`
+- `GET /api/fees`
+- `GET /api/attendance`
+- `GET /api/exams`
+- `GET /api/notices`
 
-function renderExams(exams) {
-  examList.innerHTML = exams
-    .map(
-      (exam) => `
-        <div class="metric-row">
-          <div>
-            <strong>${exam.student}</strong>
-            <div>${exam.subject}</div>
-          </div>
-          <div style="text-align:right;">
-            <strong>${exam.marks}/100</strong>
-            <div>${exam.grade}</div>
-          </div>
-        </div>
-      `
-    )
-    .join('');
-}
+`POST /api/students` expects JSON with `name`, `className`, `section`, `rollNo`, `admNo`, `guardian`, and `phone`.
 
-function renderTeachers(teachers) {
-  teacherList.innerHTML = teachers
-    .map(
-      (teacher) => `
-        <div class="teacher-item">
-          <div class="teacher-meta">
-            <div class="avatar">${teacher.name.split(' ').map((part) => part[0]).slice(0,2).join('')}</div>
-            <div>
-              <strong>${teacher.name}</strong><br />
-              <small>${teacher.subject}</small>
-            </div>
-          </div>
-          <div>
-            <small>${teacher.grade}</small><br />
-            <small>${teacher.experience}</small>
-          </div>
-        </div>
-      `
-    )
-    .join('');
-}
+## Structure
+```text
+.
+├── server.js            # Express API and static web server
+├── public/
+│   ├── index.html       # Dashboard page
+│   ├── styles.css       # Responsive UI styles
+│   └── app.js           # Fetch/render and student form behavior
+├── package.json
+└── .env.example
+```
 
-function renderNotices(notices) {
-  noticeList.innerHTML = notices
-    .map(
-      (notice) => `
-        <div class="metric-row">
-          <div>
-            <strong>${notice.title}</strong>
-            <div>${notice.date}</div>
-          </div>
-          <span class="notice-tag">${notice.category}</span>
-        </div>
-      `
-    )
-    .join('');
-}
+## Suggested next steps for a real deployment
+1. Select PostgreSQL or another supported database and replace in-memory arrays with migrations and repositories.
+2. Add secure login, password hashing, session/token handling, role-based permissions, and CSRF protections where applicable.
+3. Implement CRUD, validation, and audit history for students, staff, attendance, fees, exams, timetable, library, transport, and notices.
+4. Add automated tests, backups, monitoring, privacy controls, and deployment secrets; never commit real student records or credentials.
 
-function openModal() {
-  studentModal.classList.remove('hidden');
-}
-
-function closeModal() {
-  studentModal.classList.add('hidden');
-  studentForm.reset();
-}
-
-studentForm.addEventListener('submit', async (event) => {
-  event.preventDefault();
-
-  const formData = new FormData(studentForm);
-  const body = Object.fromEntries(formData.entries());
-
-  const res = await fetch('/api/students', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(body)
-  });
-
-  if (res.ok) {
-    closeModal();
-    fetchDashboard();
-  }
-});
-
-addStudentBtn.addEventListener('click', openModal);
-closeModalBtn.addEventListener('click', closeModal);
-cancelModalBtn.addEventListener('click', closeModal);
-
-fetchDashboard();
-
-
+The sample records are fictional demo data. Do not enter sensitive personal information into this starter.
