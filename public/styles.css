@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>School ERP</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand-box">
+          <div class="brand-mark">S</div>
+          <div>
+            <p class="eyebrow">School</p>
+            <h1>ERP Pro</h1>
+          </div>
+        </div>
+
+        <nav class="nav">
+          <a class="nav-item active" href="#overview">Overview</a>
+          <a class="nav-item" href="#students">Students</a>
+          <a class="nav-item" href="#attendance">Attendance</a>
+          <a class="nav-item" href="#fees">Fees</a>
+          <a class="nav-item" href="#academics">Academics</a>
+          <a class="nav-item" href="#notices">Notices</a>
+        </nav>
+
+        <div class="sidebar-card">
+          <span class="small-label">Academic Year</span>
+          <strong>2026 - 2027</strong>
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">Welcome back</p>
+            <h2>School Management Dashboard</h2>
+          </div>
+          <div class="topbar-actions">
+            <button class="outline-btn">Export</button>
+            <button class="primary-btn">+ Add Student</button>
+          </div>
+        </header>
+
+        <section id="overview" class="stats-grid" aria-label="Overview Statistics"></section>
+
+        <section class="content-grid">
+          <div class="panel large-panel" id="students">
+            <div class="panel-header">
+              <div>
+                <p class="eyebrow">Students</p>
+                <h3>Student Directory</h3>
+              </div>
+              <button class="link-btn" id="addStudentBtn">New Student</button>
+            </div>
+
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Class</th>
+                    <th>Roll No.</th>
+                    <th>Guardian</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="studentTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="panel" id="attendance">
+            <div class="panel-header">
+              <div>
+                <p class="eyebrow">Monitoring</p>
+                <h3>Attendance</h3>
+              </div>
+            </div>
+            <div id="attendanceList" class="stack-list"></div>
+          </div>
+        </section>
+
+        <section class="content-grid lower-grid">
+          <div class="panel" id="fees">
+            <div class="panel-header">
+              <div>
+                <p class="eyebrow">Finance</p>
+                <h3>Fee Collection</h3>
+              </div>
+            </div>
+            <div id="feeList" class="stack-list"></div>
+          </div>
+
+          <div class="panel" id="academics">
+            <div class="panel-header">
+              <div>
+                <p class="eyebrow">Academics</p>
+                <h3>Exam Results</h3>
+              </div>
+            </div>
+            <div id="examList" class="stack-list"></div>
+          </div>
+        </section>
+
+        <section class="content-grid lower-grid">
+          <div class="panel">
+            <div class="panel-header">
+              <div>
+                <p class="eyebrow">Faculty</p>
+                <h3>Teacher Directory</h3>
+              </div>
+            </div>
+            <div id="teacherList" class="teacher-list"></div>
+          </div>
+
+          <div class="panel" id="notices">
+            <div class="panel-header">
+              <div>
+                <p class="eyebrow">Communication</p>
+                <h3>Notices & Events</h3>
+              </div>
+            </div>
+            <div id="noticeList" class="stack-list"></div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <div class="modal hidden" id="studentModal">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h3>Add New Student</h3>
+          <button class="close-btn" id="closeModalBtn">×</button>
+        </div>
+        <form id="studentForm">
+          <div class="form-grid">
+            <input type="text" name="name" placeholder="Student name" required />
+            <input type="text" name="className" placeholder="Class" required />
+            <input type="text" name="section" placeholder="Section" required />
+            <input type="number" name="rollNo" placeholder="Roll no" required />
+            <input type="text" name="admNo" placeholder="Admission No" required />
+            <input type="text" name="guardian" placeholder="Guardian" required />
+            <input type="tel" name="phone" placeholder="Phone" required />
+          </div>
+          <div class="modal-actions">
+            <button type="button" class="outline-btn" id="cancelModalBtn">Cancel</button>
+            <button type="submit" class="primary-btn">Save Student</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script src="/app.js"></script>
+  </body>
+</html>
